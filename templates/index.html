@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url("/static/background.webp");
+            background-size: cover;
+            background-position: center 22%;
+            background-repeat: no-repeat; 
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 350px;
+        }
+        h1, h3 {
+            color: #333;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #imagePreview {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            display: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .predefined-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .predefined-container form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .predefined-container img {
+            width: 120px;
+            height: 120px;
+            cursor: pointer;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            object-fit: cover;
+            transition: transform 0.2s;
+        }
+        .predefined-container img:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Waste Classification</h1>
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" accept="image/*">
+            <label for="fileInput" class="upload-btn">Choose Image</label>
+            <br>
+            <img id="imagePreview" alt="Selected Image" />
+            <button type="submit">Detect</button>
+        </form>
+
+        <h3>Or Select a Predefined Image</h3>
+        <div class="predefined-container">
+            {% for img in predefined_images %}
+                <form action="/predict" method="post">
+                    <input type="hidden" name="predefined_image" value="{{ img }}">
+                    <img src="{{ url_for('static', filename='predefined/' + img) }}" onclick="this.parentNode.submit();">
+                </form>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.getElementById('imagePreview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
