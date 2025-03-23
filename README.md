@@ -53,10 +53,7 @@ Visit `http://127.0.0.1:5000/` to access the waste classifier web interface.
 ## Contributing
 Feel free to contribute! Fork the repo, create a new branch, make changes, and submit a PR. 🚀
 
-## License
-This project is licensed under the MIT License.
 
 ## Contact
-📧 Email: [your-email@example.com](mailto:your-email@example.com)  
 🌐 Website: [tauqueeralam.com](https://tauqueeralam.com)
 
